@@ -1,1 +1,5 @@
 /Assembly-CSharp.csproj
+/obj
+/Temp
+/Library
+/Roguelike.sln
