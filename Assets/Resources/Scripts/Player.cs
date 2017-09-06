@@ -13,9 +13,31 @@ public class Player : MonoBehaviour {
 	[SerializeField]
 	eDir _Dir; // 移動方向
 
-	// Use this for initialization
+	/// <summary>
+	/// 状態
+	/// </summary>
+	enum eAnimState {
+		Standby, // 待機アニメ
+		Walk,    // 歩きアニメ
+	}
+
+	// ------------------------------------------
+	// ■メンバ変数
+
+	// アニメーション状態
+	[SerializeField]
+	eAnimState _AnimState = eAnimState.Standby;
+
+	// アニメーションタイマー
+	float _AnimTimer = 0;
+
+	/// <summary>
+	/// 初期化
+	/// </summary>
 	void Start () {
 		_Dir = eDir.Down;
+		_AnimState = eAnimState.Standby;
+		_AnimTimer = 0;
 	}
 	
 	/// <summary>
@@ -32,7 +54,7 @@ public class Player : MonoBehaviour {
 	/// 更新・移動
 	/// </summary>
 	void _UpdateMove() {
-		Vector3 p = transform.position;
+		// 移動方向を判定する
 		eDir Dir = eDir.None;
 		if (Input.GetKey (KeyCode.UpArrow)) {
 			// 上キーを押している
@@ -47,10 +69,15 @@ public class Player : MonoBehaviour {
 			// 右キーを押している
 			Dir = eDir.Right;
 		}
-		Vector2 v = DirUtil.ToVecWorld (Dir);
+		_AnimState = eAnimState.Standby;
 		if (Dir != eDir.None) {
 			_Dir = Dir;
+			_AnimState = eAnimState.Walk;
 		}
+
+		// 移動量を求める
+		Vector3 p = transform.position;
+		Vector2 v = DirUtil.ToVecWorld (Dir);
 		p.x += v.x * _MOVE_SPEED;
 		p.y += v.y * _MOVE_SPEED;
 
@@ -78,12 +105,43 @@ public class Player : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// アニメーションのオフセット番号を取得する
+	/// </summary>
+	/// <returns>The animation offset.</returns>
+	int _GetAnimationOfs() {
+		int t = (int)(_AnimTimer * 40);
+		switch (_AnimState) {
+		case eAnimState.Standby:
+			if (t%24 < 12) {
+				return 0;
+			} else {
+				return 1;
+			}
+		case eAnimState.Walk:
+			int v = t % 32;
+			if (v < 8) {
+				return 0;
+			} else if (v < 16) {
+				return 1;
+			} else if (v < 24) {
+				return 2;
+			} else {
+				return 3;
+			}
+		}
+
+		return 0;
+	}
+
+	/// <summary>
 	/// アニメーションの更新
 	/// </summary>
 	void _UpdateAnimation() {
+		_AnimTimer += Time.deltaTime;
 		int idx = _GetAnimationIdx ();
+		int ofs = _GetAnimationOfs ();
 		idx *= 4;
-		_ChangeSprite (idx);
+		_ChangeSprite (idx + ofs);
 	}
 
 	/// <summary>
