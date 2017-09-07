@@ -87,7 +87,7 @@ public class Player : MonoBehaviour {
 		if (Dir != eDir.None) {
 			_Dir = Dir;
 			_AnimState = eAnimState.Walk;
-			_WaitTimer = 30;
+			_WaitTimer = 10;
 		}
 
 		// 移動量を求める
