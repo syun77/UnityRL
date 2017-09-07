@@ -28,8 +28,14 @@ public class Player : MonoBehaviour {
 	[SerializeField]
 	eAnimState _AnimState = eAnimState.Standby;
 
+	// グリッド座標
+	[SerializeField]
+	int xgrid, ygrid;
+
 	// アニメーションタイマー
 	float _AnimTimer = 0;
+
+	int _WaitTimer = 0;
 
 	/// <summary>
 	/// 初期化
@@ -38,6 +44,8 @@ public class Player : MonoBehaviour {
 		_Dir = eDir.Down;
 		_AnimState = eAnimState.Standby;
 		_AnimTimer = 0;
+		xgrid = 6;
+		ygrid = 6;
 	}
 	
 	/// <summary>
@@ -54,9 +62,15 @@ public class Player : MonoBehaviour {
 	/// 更新・移動
 	/// </summary>
 	void _UpdateMove() {
+
+		if (_WaitTimer > 0) {
+			_WaitTimer--;
+			return;
+		}
+
 		// 移動方向を判定する
 		eDir Dir = eDir.None;
-		if (Input.GetKey (KeyCode.UpArrow)) {
+		if (Input.GetKey(KeyCode.UpArrow)) {
 			// 上キーを押している
 			Dir = eDir.Up;
 		} else if (Input.GetKey (KeyCode.LeftArrow)) {
@@ -73,13 +87,16 @@ public class Player : MonoBehaviour {
 		if (Dir != eDir.None) {
 			_Dir = Dir;
 			_AnimState = eAnimState.Walk;
+			_WaitTimer = 30;
 		}
 
 		// 移動量を求める
 		Vector3 p = transform.position;
 		Vector2 v = DirUtil.ToVecWorld (Dir);
-		p.x += v.x * _MOVE_SPEED;
-		p.y += v.y * _MOVE_SPEED;
+		xgrid += (int)v.x;
+		ygrid += (int)v.y;
+		p.x = Field.ToWorldX (xgrid);
+		p.y = Field.ToWorldY (ygrid);
 
 		// 移動量反映
 		transform.position = p;
