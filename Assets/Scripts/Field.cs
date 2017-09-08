@@ -21,11 +21,7 @@ public class Field {
 	public static float ToWorldX(int x) {
 		// カメラビューの左下の座標を取得
 		Vector2 min = Camera.main.ViewportToWorldPoint(new Vector2(0, 0));
-		var spr = GetChipSprite();
-		var sprW = spr.bounds.size.x;
-
-		return min.x + (sprW * x) + sprW/2;
-
+		return min.x + ToWorldDX (x) + ToWorldDX(1) * 0.5f;
 	}
 
 	/// <summary>
@@ -36,11 +32,28 @@ public class Field {
 	public static float ToWorldY(int y) {
 		// カメラビューの右上の座標を取得する
 		Vector2 max = Camera.main.ViewportToWorldPoint(new Vector2(1, 1));
-		var spr = GetChipSprite();
-		var sprH = spr.bounds.size.y;
+		// Unityでは上下逆になるので、逆さにして変換
+		return max.y + ToWorldDY(y) + ToWorldDY(1) * 0.5f;
+	}
+
+	public static float ToWorldDX(int dx) {
+		if (CHIP_WIDTH == 0) {
+			var spr = GetChipSprite();
+			CHIP_WIDTH = spr.bounds.size.x;
+		}
+
+		return (CHIP_WIDTH * dx);
+	}
+	public static float ToWorldDY(int dy) {
+		if (CHIP_HEIGHT == 0) {
+			var spr = GetChipSprite();
+			CHIP_HEIGHT = spr.bounds.size.y;
+		}
 
 		// Unityでは上下逆になるので、逆さにして変換
-		return max.y - (sprH * y) - sprH/2;
-
+		return -(CHIP_HEIGHT * dy);
 	}
+
+	public static float CHIP_WIDTH = 0;
+	public static float CHIP_HEIGHT = 0;
 }

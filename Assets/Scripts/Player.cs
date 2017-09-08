@@ -8,13 +8,18 @@ using UnityEngine;
 public class Player : MonoBehaviour {
 
 	[SerializeField]
-	float _MOVE_SPEED = 0.1f; // 移動速度
-
-	[SerializeField]
-	eDir _Dir; // 移動方向
+	int _TIMER_WALK = 10; // 移動速度
 
 	/// <summary>
 	/// 状態
+	/// </summary>
+	enum eState {
+		KeyInput, // 入力待ち
+		Walk,     // 移動中
+	}
+
+	/// <summary>
+	/// アニメーション状態
 	/// </summary>
 	enum eAnimState {
 		Standby, // 待機アニメ
@@ -24,18 +29,30 @@ public class Player : MonoBehaviour {
 	// ------------------------------------------
 	// ■メンバ変数
 
+	[SerializeField]
+	eDir _Dir; // 移動方向
+
+	// 状態
+	[SerializeField]
+	eState _State = eState.KeyInput;
+
 	// アニメーション状態
 	[SerializeField]
 	eAnimState _AnimState = eAnimState.Standby;
 
 	// グリッド座標
 	[SerializeField]
-	int xgrid, ygrid;
+	int _GridX, _GridY;
+
+	// 移動先の座標
+	[SerializeField]
+	int _NextX, _NextY;
 
 	// アニメーションタイマー
 	float _AnimTimer = 0;
 
-	int _WaitTimer = 0;
+	// 汎用タイマー
+	int _Timer = 0;
 
 	/// <summary>
 	/// 初期化
@@ -44,30 +61,46 @@ public class Player : MonoBehaviour {
 		_Dir = eDir.Down;
 		_AnimState = eAnimState.Standby;
 		_AnimTimer = 0;
-		xgrid = 6;
-		ygrid = 6;
+		_GridX = 6;
+		_GridY = 6;
+		_NextX = _GridX;
+		_NextY = _GridY;
 	}
 	
 	/// <summary>
 	/// 更新
 	/// </summary>
 	void Update () {
-		// 移動
-		_UpdateMove ();
+
+		switch (_State) {
+		case eState.KeyInput:
+			// 入力待ち
+			_UpdateKeyInput ();
+			break;
+
+		case eState.Walk:
+			// 移動
+			_UpdateWalk ();
+			break;
+		}
+
+		// 座標の更新
+		if (_State == eState.Walk) {
+			// 補間あり
+			float Ratio = 1.0f *  _Timer / _TIMER_WALK;
+			_UpdatePosition (Ratio);
+		} else {
+			_UpdatePosition(0);
+		}
+
 		// アニメーションの更新
 		_UpdateAnimation();
 	}
 
 	/// <summary>
-	/// 更新・移動
+	/// 更新・キー入力待ち
 	/// </summary>
-	void _UpdateMove() {
-
-		if (_WaitTimer > 0) {
-			_WaitTimer--;
-			return;
-		}
-
+	void _UpdateKeyInput() {
 		// 移動方向を判定する
 		eDir Dir = eDir.None;
 		if (Input.GetKey(KeyCode.UpArrow)) {
@@ -85,18 +118,48 @@ public class Player : MonoBehaviour {
 		}
 		_AnimState = eAnimState.Standby;
 		if (Dir != eDir.None) {
+			// 移動する
+			Vector2 v = DirUtil.ToVec(Dir);
+			_NextX = _GridX + (int)v.x;
+			_NextY = _GridY + (int)v.y;
 			_Dir = Dir;
 			_AnimState = eAnimState.Walk;
-			_WaitTimer = 10;
+			_Timer = 0;
+			_State = eState.Walk;
 		}
+	}
 
+	/// <summary>
+	/// 更新・移動
+	/// </summary>
+	void _UpdateWalk() {
+		_Timer++;
+		if (_Timer >= _TIMER_WALK) {
+			// 移動完了
+			_GridX = _NextX;
+			_GridY = _NextY;
+			_State = eState.KeyInput;
+			_AnimState = eAnimState.Standby;
+		}
+	}
+
+	/// <summary>
+	/// 座標の更新
+	/// </summary>
+	/// <param name="bInterpolated">補間を有効にするかどうか<c>true</c> b interpolated.</param>
+	/// <param name="Ratio">補間値</param>
+	void _UpdatePosition(float Ratio) {
 		// 移動量を求める
 		Vector3 p = transform.position;
-		Vector2 v = DirUtil.ToVecWorld (Dir);
-		xgrid += (int)v.x;
-		ygrid += (int)v.y;
-		p.x = Field.ToWorldX (xgrid);
-		p.y = Field.ToWorldY (ygrid);
+		float px = Field.ToWorldX (_GridX);
+		float py = Field.ToWorldY (_GridY);
+		if (Ratio > 0) {
+			// 補間あり
+			px += Field.ToWorldDX (_NextX - _GridX) * Ratio;
+			py += Field.ToWorldDY (_NextY - _GridY) * Ratio;
+		}
+		p.x = px;
+		p.y = py;
 
 		// 移動量反映
 		transform.position = p;
