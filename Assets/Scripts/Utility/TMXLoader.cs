@@ -11,6 +11,18 @@ public class TMXLoader
   /// 保持しているLayer.
   Dictionary<string, Array2D> _layers;
 
+  int _TileWidth = 0;
+  int _TileHeight = 0;
+
+  /// 幅
+  public int TileWidth {
+    get { return _TileWidth; }
+  }
+  /// 高さ
+  public int TileHeight {
+    get { return _TileHeight; }
+  }
+
   /// レイヤー取得する.
   public Array2D GetLayer(string name)
   {
@@ -49,11 +61,11 @@ public class TMXLoader
         // マップ属性を取得.
         XmlAttributeCollection attrs = child.Attributes;
         string name = attrs.GetNamedItem("name").Value; // 名前を取得.
-        int w = int.Parse(attrs.GetNamedItem("width").Value); // 幅を取得.
-        int h = int.Parse(attrs.GetNamedItem("height").Value); // 高さを取得.
+        _TileWidth  = int.Parse(attrs.GetNamedItem("width").Value); // 幅を取得.
+        _TileHeight = int.Parse(attrs.GetNamedItem("height").Value); // 高さを取得.
         // レイヤー生成.
         var layer = new Array2D();
-        layer.Create(w, h);
+        layer.Create(_TileWidth, _TileHeight);
         XmlNode node = child.FirstChild; // 子ノードは<data>のみ.
         XmlNode n = node.FirstChild; // テキストノードを取得.
         string val = n.Value; // テキストを取得.
