@@ -111,6 +111,9 @@ public class FieldManager : MonoBehaviour {
 
     // マップデータ読み込み
     _LoadMap ();
+
+    // オブジェクト生成
+    _CreateObjects();
 	}
 
   /// <summary>
@@ -152,8 +155,8 @@ public class FieldManager : MonoBehaviour {
     // テクスチャ書き込み
     var width = _Layer.Width;
     _Layer.ForEach ((int i, int j, int v) => {
-      switch(v) {
-      case 3:
+      switch((eTile)v) {
+      case eTile.Wall: // 壁
         RenderTile(i, j, v);
         break;
       }
@@ -163,6 +166,21 @@ public class FieldManager : MonoBehaviour {
     RenderTileApply ();
   }
 
+  /// <summary>
+  /// マップデータを元にオブジェクトを生成する
+  /// </summary>
+  void _CreateObjects() {
+
+    _Layer.ForEach ((int i, int j, int v) => {
+      switch((eTile)v) {
+      case eTile.Player: // プレイヤー
+        var obj = GameObject.Find("Player");
+        var player = obj.GetComponent<Player>();
+        player.Warp(i, j); // 座標を設定
+        break;
+      }
+    });
+  }
 	
   /// <summary>
   /// 更新

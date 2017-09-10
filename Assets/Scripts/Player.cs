@@ -54,6 +54,21 @@ public class Player : MonoBehaviour {
 	// 汎用タイマー
 	int _Timer = 0;
 
+  /// <summary>
+  /// 指定座標にワープする
+  /// </summary>
+  /// <param name="i">The index.</param>
+  /// <param name="j">J.</param>
+  public void Warp(int i, int j) {
+    _GridX = i;
+    _GridY = j;
+    _NextX = i;
+    _NextY = j;
+  }
+
+  // =======================================================
+  // ■ここから private 関数
+
 	/// <summary>
 	/// 初期化
 	/// </summary>
@@ -61,10 +76,6 @@ public class Player : MonoBehaviour {
 		_Dir = eDir.Down;
 		_AnimState = eAnimState.Standby;
 		_AnimTimer = 0;
-		_GridX = 6;
-		_GridY = 6;
-		_NextX = _GridX;
-		_NextY = _GridY;
 	}
 	
 	/// <summary>
