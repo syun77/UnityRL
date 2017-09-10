@@ -1,21 +1,17 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Utility/TMXLoader.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Tile.cs">
     <Files>
-      <File FileName="Assets/Scripts/Utility/Util.cs" Line="39" Column="3" />
-      <File FileName="Assets/Scripts/Utility/TMXLoader.cs" Line="12" Column="39" />
-      <File FileName="Assets/Scripts/Field.cs" Line="23" Column="1" NotebookId="1" />
-      <File FileName="Assets/Scripts/Player.cs" Line="234" Column="1" NotebookId="1" />
-      <File FileName="Assets/Scripts/Tile.cs" Line="24" Column="18" NotebookId="1" />
-      <File FileName="Assets/Scripts/FieldManager.cs" Line="37" Column="21" NotebookId="1" />
-      <File FileName="Assets/Scripts/DirUtil.cs" Line="42" Column="28" NotebookId="1" />
-      <File FileName="Assets/Scripts/Utility/Array2D.cs" Line="73" Column="1" NotebookId="1" />
+      <File FileName="Assets/Scripts/Field.cs" Line="24" Column="18" />
+      <File FileName="Assets/Scripts/Player.cs" Line="158" Column="20" />
+      <File FileName="Assets/Scripts/Tile.cs" Line="24" Column="18" />
+      <File FileName="Assets/Scripts/FieldManager.cs" Line="34" Column="15" />
+      <File FileName="Assets/Scripts/DirUtil.cs" Line="42" Column="28" />
+      <File FileName="Assets/Scripts/Utility/Array2D.cs" Line="73" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="/Users/syun/Desktop/UnityRL/Assets/Scripts/FieldManager.cs" line="78" column="18" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

@@ -120,12 +120,18 @@ public class Player : MonoBehaviour {
 		if (Dir != eDir.None) {
 			// 移動する
 			Vector2 v = DirUtil.ToVec(Dir);
-			_NextX = _GridX + (int)v.x;
-			_NextY = _GridY + (int)v.y;
+      int NextX = _GridX + (int)v.x;
+			int NextY = _GridY + (int)v.y;
 			_Dir = Dir;
-			_AnimState = eAnimState.Walk;
-			_Timer = 0;
-			_State = eState.Walk;
+
+      if (FieldManager.IsMovabledTile(NextX, NextY)) {
+        // 移動可能
+        _NextX = NextX;
+        _NextY = NextY;
+        _AnimState = eAnimState.Walk;
+        _Timer = 0;
+        _State = eState.Walk;
+      }
 		}
 	}
 
