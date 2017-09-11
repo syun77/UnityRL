@@ -26,6 +26,13 @@ public class Player : MonoBehaviour {
 		Walk,    // 歩きアニメ
 	}
 
+  // ------------------------------------------
+  // ■static
+  public static Player GetInstance() {
+    var obj = GameObject.Find ("Player");
+    return obj.GetComponent<Player> ();
+  }
+
 	// ------------------------------------------
 	// ■メンバ変数
 
@@ -43,6 +50,12 @@ public class Player : MonoBehaviour {
 	// グリッド座標
 	[SerializeField]
 	int _GridX, _GridY;
+  public int GridX {
+    get { return _GridX; }
+  }
+  public int GridY {
+    get { return _GridY; }
+  }
 
 	// 移動先の座標
 	[SerializeField]
