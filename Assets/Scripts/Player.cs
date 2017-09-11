@@ -38,6 +38,9 @@ public class Player : MonoBehaviour {
 
 	[SerializeField]
 	eDir _Dir; // 移動方向
+  public eDir Dir {
+    get { return _Dir; }
+  }
 
 	// 状態
 	[SerializeField]
@@ -72,11 +75,12 @@ public class Player : MonoBehaviour {
   /// </summary>
   /// <param name="i">The index.</param>
   /// <param name="j">J.</param>
-  public void Warp(int i, int j) {
+  public void Warp(int i, int j, eDir Dir) {
     _GridX = i;
     _GridY = j;
     _NextX = i;
     _NextY = j;
+    _Dir = Dir;
   }
 
   // =======================================================

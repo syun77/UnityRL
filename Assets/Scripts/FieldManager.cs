@@ -176,7 +176,7 @@ public class FieldManager : MonoBehaviour {
       case eTile.Player: // プレイヤー
         var obj = GameObject.Find("Player");
         var player = obj.GetComponent<Player>();
-        player.Warp(i, j); // 座標を設定
+        player.Warp(i, j, eDir.Down); // 座標を設定
         break;
       }
     });

@@ -23,19 +23,25 @@ public class SaveManager : MonoBehaviour {
     if (Input.GetKeyDown (KeyCode.S)) {
       // セーブ実行
       var data = new SaveData ();
+      data.Set ();
+      // JSONにシリアライズ
       var json = JsonUtility.ToJson (data);
       debugText.GetComponent<DebugText> ().SetText (json);
-      var path = Application.dataPath + "/../" + SAVE_FILE_PATH;
+      // Assetsフォルダに保存する
+      var path = Application.dataPath + "/" + SAVE_FILE_PATH;
       var writer = new StreamWriter (path, false);
       writer.WriteLine (json);
       writer.Flush ();
       writer.Close ();
     } else if (Input.GetKeyDown (KeyCode.L)) {
       // ロード実行
-      var info = new FileInfo(Application.dataPath + "/../" + SAVE_FILE_PATH);
+      // Assetsフォルダからロード
+      var info = new FileInfo(Application.dataPath + "/" + SAVE_FILE_PATH);
       var reader = new StreamReader (info.OpenRead ());
       var json = reader.ReadToEnd ();
       debugText.GetComponent<DebugText> ().SetText (json);
+      var data = new SaveData ();
+      data.Load (json);
     }
 	}
 }
