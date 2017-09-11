@@ -8,6 +8,7 @@ using System.IO;
 /// </summary>
 public class SaveManager : MonoBehaviour {
 
+  // 保存するファイル
   const string SAVE_FILE_PATH = "save.txt";
 
   // デバッグメッセージ表示用
