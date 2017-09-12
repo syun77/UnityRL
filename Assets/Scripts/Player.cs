@@ -174,6 +174,7 @@ public class Player : MonoBehaviour {
 			_GridY = _NextY;
 			_State = eState.KeyInput;
 			_AnimState = eAnimState.Standby;
+      MessageWindowManager.AddMessage("x = " + _GridX + ", y = " + _GridY + "に移動");
 		}
 	}
 
