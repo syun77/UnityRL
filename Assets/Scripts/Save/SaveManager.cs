@@ -24,7 +24,7 @@ public class SaveManager : MonoBehaviour {
     if (Input.GetKeyDown (KeyCode.S)) {
       // セーブ実行
       var data = new SaveData ();
-      data.Set ();
+      data.Save ();
       // JSONにシリアライズ
       var json = JsonUtility.ToJson (data);
       debugText.GetComponent<DebugText> ().SetText (json);

@@ -20,16 +20,28 @@ public class FieldManager : MonoBehaviour {
   /// <summary>
   /// 背景テクスチャ
   /// </summary>
-	Texture2D _Texture = null;
+	static Texture2D _Texture = null;
 
   // タイルの幅と高さ
-	int _TileWidth = 0;
-	int _TileHeight = 0;
+	static int _TileWidth = 0;
+	static int _TileHeight = 0;
 
   /// <summary>
   /// 地形レイヤー
   /// </summary>
 	static Array2D _Layer = null;
+  public static Array2D Layer {
+    get { return _Layer; }
+  }
+
+  /// <summary>
+  /// 背景の描画
+  /// </summary>
+  static public void RenderBack() {
+    var obj = GameObject.Find ("FieldManager");
+    var msg = obj.GetComponent<FieldManager> ();
+    msg._RenderBack ();
+  }
 
   /// <summary>
   /// テクスチャに書き込む
@@ -37,7 +49,7 @@ public class FieldManager : MonoBehaviour {
   /// <param name="i">The index.</param>
   /// <param name="j">J.</param>
   /// <param name="v">V.</param>
-  public void RenderTile(int i, int j, int v) {
+  static public void RenderTile(int i, int j, int v) {
 
     // 元のスプライト取得
     Sprite[] sprites = Resources.LoadAll<Sprite> ("Levels/tileset");
@@ -71,7 +83,7 @@ public class FieldManager : MonoBehaviour {
   /// <summary>
   /// 描画を反映
   /// </summary>
-  public void RenderTileApply() {
+  static public void RenderTileApply() {
     _Texture.Apply ();
   }
 
@@ -122,17 +134,33 @@ public class FieldManager : MonoBehaviour {
   void _LoadMap() {
 
     // マップデータを読み込む
+    var level = string.Format("Levels/{0:000}", Global.level);
     var tmx = new TMXLoader ();
-    tmx.Load ("Levels/001");
-    _Layer = tmx.GetLayer ("map");
+    tmx.Load (level);
+    _Layer = tmx.GetLayerFromIndex (0);
 
-    // テクスチャ・スプライトを生成
-    var size = 32; // 1チップのサイズ
     _TileWidth  = tmx.TileWidth;
     _TileHeight = tmx.TileHeight;
+
+    // 背景描画
+    _RenderBack ();
+  }
+
+  /// <summary>
+  /// 背景描画
+  /// </summary>
+  void _RenderBack() {
+    // テクスチャ・スプライトを生成
+    var size = 32; // 1チップのサイズ
     var w = _TileWidth * size;
     var h = _TileHeight * size;
-    _Texture = new Texture2D (w, h);
+
+    if (_Texture == null) {
+      // テクスチャ生成
+      _Texture = new Texture2D (w, h);
+    } else {
+      _Texture.Resize (w, h);
+    }
     var spr = Sprite.Create (
       _Texture,
       new Rect (0, 0, _Texture.width, _Texture.height),
@@ -165,6 +193,7 @@ public class FieldManager : MonoBehaviour {
     // 描画を反映
     RenderTileApply ();
   }
+
 
   /// <summary>
   /// マップデータを元にオブジェクトを生成する

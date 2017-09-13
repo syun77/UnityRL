@@ -27,6 +27,15 @@ public class Array2D {
 		_values = new int[Width * Height];
 	}
 
+  /// <summary>
+  /// 配列から作成
+  /// </summary>
+  public void CreateFromArray(int width, int height, int[] array) {
+    _width = width;
+    _height = height;
+    _values = array;
+  }
+
 	/// 座標をインデックスに変換する
 	public int ToIdx(int x, int y) {
 		return x + (y * Width);
@@ -88,6 +97,19 @@ public class Array2D {
     }
     // 見つからなかった
     return new Vec2D(-1, -1);
+  }
+
+  /// CSV文字列に変換する
+  public string ToCsv() {
+    string ret = "";
+    ForEach((int i, int j, int v) => {
+      if(i != 0 || j != 0) {
+        ret += ",";
+      }
+      ret += v.ToString();
+    });
+
+    return ret;
   }
 
 	/// デバッグ出力

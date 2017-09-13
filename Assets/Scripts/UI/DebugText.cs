@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// デバッグ用テキスト
+/// </summary>
 public class DebugText : MonoBehaviour {
 
   // 表示時間

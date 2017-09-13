@@ -33,6 +33,24 @@ public class TMXLoader
     return _layers[name];
   }
 
+  public Array2D GetLayerFromIndex(int idx)
+  {
+    if (idx < 0 || idx >= _layers.Count) {
+      return null;
+    }
+
+    int cnt = 0;
+    foreach (var layer in _layers.Values) {
+      if (idx == cnt) {
+        return layer;
+      }
+
+      cnt++;
+    }
+
+    return null;
+  }
+
   /// レベルデータを読み込む.
   public bool Load(string fLevel)
   {
