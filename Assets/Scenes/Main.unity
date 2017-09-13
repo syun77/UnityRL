@@ -427,7 +427,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffbaef9cd1abe4edb926bf18cc3d7b6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugText: {fileID: 0}
+  debugText: {fileID: 491960668}
 --- !u!222 &762998419
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -621,8 +621,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1258948189}
   - component: {fileID: 1258948191}
-  - component: {fileID: 1258948190}
   - component: {fileID: 1258948192}
+  - component: {fileID: 1258948190}
   m_Layer: 5
   m_Name: MessageText
   m_TagString: Untagged
@@ -698,6 +698,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81ffa1e21a4254e78bec72b53ed80182, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MAX_TEXT_QUEUE: 4
+  TIMER_TEXT: 120
 --- !u!1 &1323685769
 GameObject:
   m_ObjectHideFlags: 0
@@ -837,7 +839,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6cdec15a19e34b02a86de19f62c3b11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _TIMER_WALK: 10
   _Dir: 0
   _State: 0
   _AnimState: 0
