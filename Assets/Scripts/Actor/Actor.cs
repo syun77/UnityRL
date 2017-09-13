@@ -14,9 +14,20 @@ public class Actor : MonoBehaviour {
   /// <summary>
   /// 状態
   /// </summary>
-  public enum eState {
+  public enum eAct {
     KeyInput, // 入力待ち
-    Walk,     // 移動中
+
+    // アクション
+    ActBegin, // 開始
+    Act,      // 実行中
+    ActEnd,   // 終了
+
+    // 移動
+    MoveBegin,// 開始
+    Move,     // 実行中
+    MoveEnd,  // 終了
+
+    TurnEnd,  // ターン終了
   }
 
   /// <summary>
@@ -38,7 +49,7 @@ public class Actor : MonoBehaviour {
 
   // 状態
   [SerializeField]
-  protected eState _State = eState.KeyInput;
+  protected eAct _Action = eAct.KeyInput;
 
   // アニメーション状態
   [SerializeField]
@@ -97,7 +108,7 @@ public class Actor : MonoBehaviour {
   /// </summary>
   virtual protected void Update() {
     // 座標の更新
-    if (_State == eState.Walk) {
+    if (_Action == eAct.Move) {
       // 補間あり
       float Ratio = 1.0f *  _Timer / _TIMER_WALK;
       _UpdatePosition (Ratio);

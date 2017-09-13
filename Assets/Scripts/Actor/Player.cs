@@ -28,13 +28,13 @@ public class Player : Actor {
 	/// </summary>
 	override protected void Update () {
 
-		switch (_State) {
-		case eState.KeyInput:
+		switch (_Action) {
+		case eAct.KeyInput:
 			// 入力待ち
 			_UpdateKeyInput ();
 			break;
 
-		case eState.Walk:
+		case eAct.Move:
 			// 移動
 			_UpdateWalk ();
 			break;
@@ -76,7 +76,7 @@ public class Player : Actor {
         _NextY = NextY;
         _AnimState = eAnimState.Walk;
         _Timer = 0;
-        _State = eState.Walk;
+        _Action = eAct.Move;
       }
 		}
 	}
@@ -90,7 +90,7 @@ public class Player : Actor {
 			// 移動完了
 			_GridX = _NextX;
 			_GridY = _NextY;
-			_State = eState.KeyInput;
+			_Action = eAct.KeyInput;
 			_AnimState = eAnimState.Standby;
       MessageWindowManager.AddMessage("x = " + _GridX + ", y = " + _GridY + "に移動");
 		}
