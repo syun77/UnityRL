@@ -26,27 +26,25 @@ public class Player : Actor {
 	/// <summary>
 	/// 更新
 	/// </summary>
-	override protected void Update () {
+	public void Proc() {
 
 		switch (_Action) {
 		case eAct.KeyInput:
 			// 入力待ち
-			_UpdateKeyInput ();
+			_ProcKeyInput ();
 			break;
 
 		case eAct.Move:
 			// 移動
-			_UpdateWalk ();
+			_ProcWalk ();
 			break;
 		}
-
-    base.Update ();
 	}
 
 	/// <summary>
 	/// 更新・キー入力待ち
 	/// </summary>
-	void _UpdateKeyInput() {
+	void _ProcKeyInput() {
 		// 移動方向を判定する
 		eDir Dir = eDir.None;
 		if (Input.GetKey(KeyCode.UpArrow)) {
@@ -84,7 +82,7 @@ public class Player : Actor {
 	/// <summary>
 	/// 更新・移動
 	/// </summary>
-	void _UpdateWalk() {
+	void _ProcWalk() {
 		_Timer++;
 		if (_Timer >= _TIMER_WALK) {
 			// 移動完了

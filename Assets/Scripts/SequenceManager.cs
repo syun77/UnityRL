@@ -17,5 +17,7 @@ public class SequenceManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		
+    // プレイヤーの更新
+    player.Proc();
 	}
 }
