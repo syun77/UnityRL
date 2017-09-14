@@ -13,7 +13,6 @@ public class EnemyManager : MonoBehaviour {
   public static void Create() {
     instance = GetInstance ();
     instance._Create ();
-    Add (7, 8);
   }
 
   public static Enemy Add(int xgrid, int ygrid) {

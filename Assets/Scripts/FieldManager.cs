@@ -15,6 +15,11 @@ public class FieldManager : MonoBehaviour {
     Stair,      // 階段
     Wall,       // 壁
     Floor,      // 部屋の床
+    Hint,       // ヒント
+    Shop,       // ショップ
+    Puddle,     // 水たまり
+    Pit,        // トゲ
+    Enemy,      // 敵
   }
 
   /// <summary>
@@ -203,9 +208,11 @@ public class FieldManager : MonoBehaviour {
     _Layer.ForEach ((int i, int j, int v) => {
       switch((eTile)v) {
       case eTile.Player: // プレイヤー
-        var obj = GameObject.Find("Player");
-        var player = obj.GetComponent<Player>();
+        var player = Player.GetInstance();
         player.Warp(i, j, eDir.Down); // 座標を設定
+        break;
+      case eTile.Enemy: // 敵
+        EnemyManager.Add(i, j);
         break;
       }
     });
