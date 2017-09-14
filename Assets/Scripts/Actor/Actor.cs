@@ -40,6 +40,11 @@ public class Actor : MonoBehaviour {
 
   // ------------------------------------------
   // ■メンバ変数
+  [SerializeField]
+  protected int _ID; // ID
+  public int ID {
+    get { return _ID; }
+  }
 
   [SerializeField]
   protected eDir _Dir; // 移動方向
@@ -79,6 +84,15 @@ public class Actor : MonoBehaviour {
   // ■ public関数
 
   /// <summary>
+  /// 生成
+  /// </summary>
+  /// <param name="id">Identifier.</param>
+  public void Create(int id, eDir dir) {
+    _ID = id;
+    _Dir = dir;
+  }
+
+  /// <summary>
   /// 指定座標にワープする
   /// </summary>
   /// <param name="i">The index.</param>
@@ -107,6 +121,13 @@ public class Actor : MonoBehaviour {
     _Dir = eDir.Down;
     _AnimState = eAnimState.Standby;
     _AnimTimer = 0;
+    _Start ();
+  }
+
+  /// <summary>
+  /// 開始
+  /// </summary>
+  virtual protected void _Start() {
   }
 
   /// <summary>
@@ -123,6 +144,7 @@ public class Actor : MonoBehaviour {
     }
 
     // アニメーションの更新
+    _AnimTimer += Time.deltaTime;
     _UpdateAnimation();
   }
 

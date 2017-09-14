@@ -23,6 +23,13 @@ public class Player : Actor {
   // =======================================================
   // ■ここから private 関数
 
+  /// <summary>
+  /// 開始
+  /// </summary>
+  override protected void _Start() {
+    Create (0, eDir.Down);
+  }
+
 	/// <summary>
 	/// 更新
 	/// </summary>
@@ -98,7 +105,6 @@ public class Player : Actor {
   /// アニメーションの更新
   /// </summary>
   override protected void _UpdateAnimation() {
-    _AnimTimer += Time.deltaTime;
     int idx = _GetAnimationIdx ();
     int ofs = _GetAnimationOfs ();
     idx *= 4;
