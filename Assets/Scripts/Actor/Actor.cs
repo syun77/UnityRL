@@ -91,6 +91,12 @@ public class Actor : MonoBehaviour {
     _Dir = Dir;
   }
 
+  /// <summary>
+  /// 更新
+  /// </summary>
+  virtual public void Proc() {
+  }
+
   // =======================================================
   // ■ここから private 関数
 

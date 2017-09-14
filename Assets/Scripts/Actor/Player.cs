@@ -26,7 +26,7 @@ public class Player : Actor {
 	/// <summary>
 	/// 更新
 	/// </summary>
-	public void Proc() {
+	override public void Proc() {
 
 		switch (_Action) {
 		case eAct.KeyInput:
