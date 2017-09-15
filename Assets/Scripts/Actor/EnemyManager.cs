@@ -7,7 +7,16 @@ using UnityEngine;
 /// </summary>
 public class EnemyManager : MonoBehaviour {
 
-  const int MAX_ENEMY = 8;
+  /// <summary>
+  /// 敵の最大数
+  /// </summary>
+  public const int MAX_ENEMY = 8;
+
+  /// <summary>
+  /// ForEach関数に渡す関数の型
+  /// </summary>
+  public delegate void FuncT(Enemy e);
+
   public static EnemyManager instance = null;
 
   public static void Create() {
@@ -15,10 +24,34 @@ public class EnemyManager : MonoBehaviour {
     instance._Create ();
   }
 
-  public static Enemy Add(int xgrid, int ygrid) {
+  /// <summary>
+  /// 全て消す
+  /// </summary>
+  public static void KillAll() {
+    ForEachExists ((Enemy e) => e.enabled = false);
+  }
+
+  /// <summary>
+  /// 生存数を計算する
+  /// </summary>
+  public static int Count() {
+    int cnt = 0;
+    ForEachExists ((Enemy e) => cnt++);
+    return cnt;
+  }
+
+  public static void ForEachExists(FuncT func) {
+    foreach (var e in instance._pool) {
+      if (e.enabled) {
+        func (e);
+      }
+    }
+  }
+
+  public static Enemy Add(int id, int xgrid, int ygrid) {
     foreach(var e in instance._pool) {
       if (e.enabled == false) {
-        e.Create (1, eDir.Down);
+        e.Create (id, eDir.Down);
         e.Warp (xgrid, ygrid, eDir.Down);
         e.enabled = true;
         return e;

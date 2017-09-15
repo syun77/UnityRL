@@ -31,6 +31,29 @@ public struct _Player {
   }
 }
 
+[Serializable]
+public struct _Enemy {
+  public int x;
+  public int y;
+  public eDir dir;
+
+  /// <summary>
+  /// ゲームデータから情報をコピーする
+  /// </summary>
+  public void Save(Enemy e) {
+      x = e.GridX;
+      y = e.GridY;
+      dir = e.Dir;
+  }
+
+  /// <summary>
+  /// データをゲームに反映させる
+  /// </summary>
+  public void Load() {
+    EnemyManager.Add (1, x, y);
+  }
+}
+
 /// <summary>
 /// マップ情報
 /// </summary>
@@ -60,6 +83,7 @@ public struct _Map {
 [Serializable]
 public class SaveData {
   public _Player player = new _Player();
+  public _Enemy[] enemies = null;
   public _Map    map    = new _Map ();
 
   /// <summary>
@@ -74,6 +98,15 @@ public class SaveData {
   public void Save() {
     player.Save ();
     map.Save ();
+    enemies = new _Enemy[EnemyManager.Count ()];
+    int idx = 0;
+    EnemyManager.ForEachExists (((Enemy e) => {
+      var enemy = new _Enemy();
+//      var enemy = enemies[idx];
+      enemy.Save(e);
+      enemies[idx] = enemy;
+      idx++;
+    }));
   }
 
   /// <summary>
@@ -91,5 +124,11 @@ public class SaveData {
   void _Load() {
     player.Load();
     map.Load ();
+
+    // 敵をいったん全て消す
+    EnemyManager.KillAll();
+    foreach (var e in enemies) {
+      e.Load ();
+    }
   }
 }

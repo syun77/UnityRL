@@ -212,7 +212,7 @@ public class FieldManager : MonoBehaviour {
         player.Warp(i, j, eDir.Down); // 座標を設定
         break;
       case eTile.Enemy: // 敵
-        EnemyManager.Add(i, j);
+        EnemyManager.Add(1, i, j);
         break;
       }
     });
