@@ -102,7 +102,6 @@ public class SaveData {
     int idx = 0;
     EnemyManager.ForEachExists (((Enemy e) => {
       var enemy = new _Enemy();
-//      var enemy = enemies[idx];
       enemy.Save(e);
       enemies[idx] = enemy;
       idx++;

@@ -35,13 +35,16 @@ public class Player : Actor {
 	/// </summary>
 	override public void Proc() {
 
-		switch (_Action) {
-		case eAct.KeyInput:
+		switch (State) {
+		case eState.KeyInput:
 			// 入力待ち
 			_ProcKeyInput ();
 			break;
 
-		case eAct.Move:
+    case eState.MoveBegin:
+      // 移動開始
+
+		case eState.MoveExec:
 			// 移動
 			_ProcWalk ();
 			break;
@@ -80,8 +83,8 @@ public class Player : Actor {
         _NextX = NextX;
         _NextY = NextY;
         _AnimState = eAnimState.Walk;
-        _Timer = 0;
-        _Action = eAct.Move;
+        _TimerMove = 0;
+        _Change(eState.MoveBegin);
       }
 		}
 	}
@@ -90,12 +93,13 @@ public class Player : Actor {
 	/// 更新・移動
 	/// </summary>
 	void _ProcWalk() {
-		_Timer++;
-		if (_Timer >= _TIMER_WALK) {
+		_TimerMove++;
+		if (_TimerMove >= _TIMER_WALK) {
 			// 移動完了
 			_GridX = _NextX;
 			_GridY = _NextY;
-			_Action = eAct.KeyInput;
+      // ターン終了
+      _Change(eState.TurnEnd);
 			_AnimState = eAnimState.Standby;
       MessageWindowManager.AddMessage("x = " + _GridX + ", y = " + _GridY + "に移動");
 		}

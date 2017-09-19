@@ -25,6 +25,13 @@ public class EnemyManager : MonoBehaviour {
   }
 
   /// <summary>
+  /// 全て更新する
+  /// </summary>
+  public static void ProcAll() {
+    ForEachExists((Enemy e) => e.Proc());
+  }
+
+  /// <summary>
   /// 全て消す
   /// </summary>
   public static void KillAll() {

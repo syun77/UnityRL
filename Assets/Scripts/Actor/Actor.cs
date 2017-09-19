@@ -14,18 +14,16 @@ public class Actor : MonoBehaviour {
   /// <summary>
   /// 状態
   /// </summary>
-  public enum eAct {
+  public enum eState {
     KeyInput, // 入力待ち
 
     // アクション
     ActBegin, // 開始
-    Act,      // 実行中
-    ActEnd,   // 終了
+    ActExec,  // 実行中
 
     // 移動
     MoveBegin,// 開始
-    Move,     // 実行中
-    MoveEnd,  // 終了
+    MoveExec, // 実行中
 
     TurnEnd,  // ターン終了
   }
@@ -54,7 +52,12 @@ public class Actor : MonoBehaviour {
 
   // 状態
   [SerializeField]
-  protected eAct _Action = eAct.KeyInput;
+  eState _State = eState.KeyInput;
+  public eState State {
+    get { return _State; }
+  }
+  [SerializeField]
+  eState _StatePrev = eState.KeyInput;
 
   // アニメーション状態
   [SerializeField]
@@ -77,8 +80,8 @@ public class Actor : MonoBehaviour {
   // アニメーションタイマー
   protected float _AnimTimer = 0;
 
-  // 汎用タイマー
-  protected int _Timer = 0;
+  // 移動タイマー
+  protected int _TimerMove = 0;
 
   // ------------------------------------------
   // ■ public関数
@@ -111,6 +114,58 @@ public class Actor : MonoBehaviour {
   virtual public void Proc() {
   }
 
+  /// <summary>
+  /// 移動開始
+  /// </summary>
+  public void BeginMove() {
+    switch (_State) {
+    case eState.MoveBegin:
+      // 移動開始
+      _TimerMove = 0;
+      _Change (eState.MoveExec);
+      break;
+    default:
+      Debug.LogWarningFormat ("Actor.BeginMove: Invalid State = {}", _State);
+      break;
+    }
+  }
+
+  /// <summary>
+  /// 行動開始
+  /// </summary>
+  public void BeginAction() {
+    switch (_State) {
+    case eState.ActExec:
+      // 行動開始
+      _Change (eState.ActExec);
+      break;
+
+    default:
+      Debug.LogWarningFormat ("Actor.BeginAction: Invalid State = {}", _State);
+      break;
+    }
+  }
+
+  /// <summary>
+  /// ターン終了しているかどうか
+  /// </summary>
+  /// <returns><c>true</c> if this instance is turn end; otherwise, <c>false</c>.</returns>
+  public bool IsTurnEnd() {
+    return _State == eState.TurnEnd;
+  }
+
+  /// <summary>
+  /// ターン終了
+  /// </summary>
+  public void TurnEnd() {
+    _Change (eState.KeyInput);
+  }
+
+  public void Dump() {
+    // 警告回避
+    Debug.Log (_StatePrev);
+  }
+
   // =======================================================
   // ■ここから private 関数
 
@@ -125,6 +180,15 @@ public class Actor : MonoBehaviour {
   }
 
   /// <summary>
+  /// アクション状態を変更する
+  /// </summary>
+  /// <param name="act">Act.</param>
+  protected void _Change(eState act) {
+    _StatePrev = _State;
+    _State = act;
+  }
+
+  /// <summary>
   /// 開始
   /// </summary>
   virtual protected void _Start() {
@@ -135,9 +199,9 @@ public class Actor : MonoBehaviour {
   /// </summary>
   virtual protected void Update() {
     // 座標の更新
-    if (_Action == eAct.Move) {
+    if (_State == eState.MoveExec) {
       // 補間あり
-      float Ratio = 1.0f *  _Timer / _TIMER_WALK;
+      float Ratio = 1.0f *  _TimerMove / _TIMER_WALK;
       _UpdatePosition (Ratio);
     } else {
       _UpdatePosition(0);
