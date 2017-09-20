@@ -14,11 +14,26 @@ public class Player : Actor {
     return obj.GetComponent<Player> ();
   }
 
-	// ------------------------------------------
-	// ■メンバ変数
+  // ------------------------------------------
+  // ■メンバ変数
+	Enemy _Target = null;
 
   // ------------------------------------------
   // ■ public関数
+	override public void BeginAction() {
+
+		switch (State) {
+		case eState.ActBegin:
+			// 攻撃開始
+			_Target.Kill();
+			break;
+		}
+
+		base.BeginAction ();
+
+		// TODO: ひとまず1ターンで倒したことにする
+		_Change (eState.TurnEnd);
+	}
 
   // =======================================================
   // ■ここから private 関数
@@ -74,22 +89,38 @@ public class Player : Actor {
 			Dir = eDir.Right;
 		}
 		_AnimState = eAnimState.Standby;
-		if (Dir != eDir.None) {
-			// 移動する
-			Vector2 v = DirUtil.ToVec(Dir);
-      int NextX = _GridX + (int)v.x;
-			int NextY = _GridY + (int)v.y;
-			_Dir = Dir;
-
-      if (FieldManager.IsMovabledTile(NextX, NextY)) {
-        // 移動可能
-        _NextX = NextX;
-        _NextY = NextY;
-        _AnimState = eAnimState.Walk;
-        _TimerMove = 0;
-        _Change(eState.MoveBegin);
-      }
+		if (Dir == eDir.None) {
+			return;
 		}
+
+		// 移動する
+		Vector2 v = DirUtil.ToVec(Dir);
+    int NextX = _GridX + (int)v.x;
+		int NextY = _GridY + (int)v.y;
+		_Dir = Dir;
+
+		_Target = null;
+		EnemyManager.ForEachExists (((Enemy e) => {
+			if(e.ExistsGrid(NextX, NextY)) {
+				// 移動先に敵がいた
+				_Target = e;
+			}
+		}));
+
+		if (_Target != null) {
+			// 移動先に敵がいる
+			_Change (eState.ActBegin);
+			return;
+		}
+
+    if (FieldManager.IsMovabledTile(NextX, NextY)) {
+      // 移動可能
+      _NextX = NextX;
+      _NextY = NextY;
+      _AnimState = eAnimState.Walk;
+      _TimerMove = 0;
+      _Change(eState.MoveBegin);
+    }
 	}
 
   /// <summary>

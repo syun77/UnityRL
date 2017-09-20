@@ -71,7 +71,7 @@ public class EnemyManager : MonoBehaviour {
       if (e.enabled == false) {
         e.Create (id, eDir.Down);
         e.Warp (xgrid, ygrid, eDir.Down);
-        e.enabled = true;
+				e.Revive ();
         return e;
       }
     }
@@ -92,7 +92,7 @@ public class EnemyManager : MonoBehaviour {
     for(int i = 0; i < _pool.Length; i++) {
       var obj = GameObject.Instantiate (prefab);
       _pool [i] = obj.GetComponent<Enemy> ();
-      _pool [i].enabled = false;
+			_pool [i].Kill ();
     }
   }
 

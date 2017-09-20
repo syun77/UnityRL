@@ -881,7 +881,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _ID: 0
   _Dir: 0
-  _Action: 0
+  _State: 0
+  _StatePrev: 0
   _AnimState: 0
   _GridX: 0
   _GridY: 0
@@ -940,4 +941,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c146ebac0fd50445db7ec4ede1df3e66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1471122196}
+  _player: {fileID: 1471122196}
+  _State: 0
+  _StatePrev: 0

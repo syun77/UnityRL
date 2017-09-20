@@ -95,6 +95,24 @@ public class Actor : MonoBehaviour {
     _Dir = dir;
   }
 
+	/// <summary>
+	/// 復活する
+	/// </summary>
+	virtual public void Revive() {
+		enabled = true;
+		var renderer = GetComponent<SpriteRenderer> ();
+		renderer.enabled = true;
+	}
+
+	/// <summary>
+	/// 消滅させる
+	/// </summary>
+	virtual public void Kill() {
+		enabled = false;
+		var renderer = GetComponent<SpriteRenderer> ();
+		renderer.enabled = false;
+	}
+
   /// <summary>
   /// 指定座標にワープする
   /// </summary>
@@ -135,7 +153,7 @@ public class Actor : MonoBehaviour {
       _Change (eState.MoveExec);
       break;
     default:
-      Debug.LogWarningFormat ("Actor.BeginMove: Invalid State = {}", _State);
+      Debug.LogWarningFormat ("Actor.BeginMove: Invalid State = {0}", _State);
       break;
     }
   }
@@ -143,15 +161,15 @@ public class Actor : MonoBehaviour {
   /// <summary>
   /// 行動開始
   /// </summary>
-  public void BeginAction() {
+  virtual public void BeginAction() {
     switch (_State) {
-    case eState.ActExec:
+    case eState.ActBegin:
       // 行動開始
       _Change (eState.ActExec);
       break;
 
     default:
-      Debug.LogWarningFormat ("Actor.BeginAction: Invalid State = {}", _State);
+      Debug.LogWarningFormat ("Actor.BeginAction: Invalid State = {0}", _State);
       break;
     }
   }

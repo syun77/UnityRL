@@ -20,7 +20,8 @@ public class Enemy : Actor {
 
     if (target.ExistsGrid (p.x, p.y)) {
       // 移動先にプレイヤーがいるときは攻撃する
-      _Change(eState.ActBegin);
+      //_Change(eState.ActBegin);
+			_Change(eState.TurnEnd); // TODO: ひとまずターン終了
       return;
     }
 

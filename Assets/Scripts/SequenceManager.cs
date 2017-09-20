@@ -31,7 +31,8 @@ public class SequenceManager : MonoBehaviour {
     GameClear,      // ゲームクリア
   }
 
-  public Player player = null;
+  [SerializeField]
+  Player _player = null;
 
   [SerializeField]
   eState _State = eState.KeyInput; // 状態
@@ -45,8 +46,8 @@ public class SequenceManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-    player = player.GetComponent<Player> ();
-    Enemy.target = player;
+    _player = _player.GetComponent<Player> ();
+    Enemy.target = _player;
 	}
 	
 	// Update is called once per frame
@@ -70,16 +71,17 @@ public class SequenceManager : MonoBehaviour {
     var ret = false;
 
     // プレイヤーの更新
-    player.Proc ();
+    _player.Proc ();
     // 敵の更新
     EnemyManager.ProcAll ();
 
     switch (_State) {
     case eState.KeyInput:
       /// ■キー入力待ち
-      switch (player.State) {
+      switch (_player.State) {
       case Actor.eState.ActBegin:
         // プレイヤー行動実行
+				_player.BeginAction();
         _Change (eState.PlayerAct);
         ret = true;
         break;
@@ -97,7 +99,10 @@ public class SequenceManager : MonoBehaviour {
       }
       break;
 
-    case eState.PlayerAct:
+		case eState.PlayerAct:
+			if (_player.IsTurnEnd ()) {
+				_Change (eState.PlayerActEnd);
+			}
       break;
 
     case eState.PlayerActEnd:
@@ -114,13 +119,13 @@ public class SequenceManager : MonoBehaviour {
       // 敵の行動を要求する
       EnemyManager.ForEachExists((Enemy e) => e.RequestMove());
 
-      if (player.IsTurnEnd ()) {
+      if (_player.IsTurnEnd ()) {
         // TODO: プレイヤーの行動が終わっていれば敵のみ行動する
         _Change(eState.EnemyActBegin);
         ret = true;
       } else {
         // プレイヤーと敵が一緒に行動する
-        player.BeginMove();
+        _player.BeginMove();
         EnemyManager.MoveAll ();
         _Change (eState.Move);
       }
@@ -128,7 +133,7 @@ public class SequenceManager : MonoBehaviour {
 
     case eState.Move:
       // 移動実行中
-      if (player.IsTurnEnd ()) {
+      if (_player.IsTurnEnd ()) {
         // 敵の行動開始
         _Change(eState.EnemyActBegin);
       }
@@ -175,7 +180,7 @@ public class SequenceManager : MonoBehaviour {
     // 敵ターン終了
     EnemyManager.ForEachExists(((Enemy e) => e.TurnEnd()));
     // プレイヤーターン終了
-    player.TurnEnd();
+    _player.TurnEnd();
 
     // TODO: 次の階へ進む判定
 
