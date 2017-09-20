@@ -46,6 +46,7 @@ public class SequenceManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
     player = player.GetComponent<Player> ();
+    Enemy.target = player;
 	}
 	
 	// Update is called once per frame
@@ -110,17 +111,17 @@ public class SequenceManager : MonoBehaviour {
       break;
 
     case eState.EnemyRequestAI: // 敵のAI
-      // TODO: 敵の行動を要求する
-      //EnemyManager.ForEachExists((Enemy e) => e.RequestMove());
+      // 敵の行動を要求する
+      EnemyManager.ForEachExists((Enemy e) => e.RequestMove());
 
-      //if (_Player.isTurnEnd ()) {
-      if (false) {
+      if (player.IsTurnEnd ()) {
         // TODO: プレイヤーの行動が終わっていれば敵のみ行動する
         _Change(eState.EnemyActBegin);
         ret = true;
       } else {
         // プレイヤーと敵が一緒に行動する
         player.BeginMove();
+        EnemyManager.MoveAll ();
         _Change (eState.Move);
       }
       break;

@@ -39,8 +39,8 @@ public class DirUtil {
 		return v;
 	}
 
-	public static Vector2 ToVecWorld(eDir Dir) {
-		Vector2 v = new Vector2(0, 0);
+	public static Point2D ToVecWorld(eDir Dir) {
+		var v = new Point2D(0, 0);
 		switch (Dir) {
 		case eDir.Left:
 			v.x = -1;
@@ -58,4 +58,28 @@ public class DirUtil {
 
 		return v;
 	}
+
+  /// <summary>
+  /// 指定の座標に移動量を足し込む
+  /// </summary>
+  /// <param name="p">P.</param>
+  /// <param name="Dir">Dir.</param>
+  public static Point2D Add(Point2D p, eDir Dir) {
+    switch (Dir) {
+    case eDir.Left:
+      p.x -= 1;
+      break;
+    case eDir.Up:
+      p.y -= 1;
+      break;
+    case eDir.Right:
+      p.x += 1;
+      break;
+    case eDir.Down:
+      p.y += 1;
+      break;
+    }
+
+    return p;
+  }
 }

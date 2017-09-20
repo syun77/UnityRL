@@ -44,9 +44,12 @@ public class Player : Actor {
     case eState.MoveBegin:
       // 移動開始
 
-		case eState.MoveExec:
+    case eState.MoveExec:
 			// 移動
-			_ProcWalk ();
+      if (_ProcMove ()) {
+        // 移動完了
+        _Change(eState.TurnEnd);
+      }
 			break;
 		}
 	}
@@ -86,22 +89,6 @@ public class Player : Actor {
         _TimerMove = 0;
         _Change(eState.MoveBegin);
       }
-		}
-	}
-
-	/// <summary>
-	/// 更新・移動
-	/// </summary>
-	void _ProcWalk() {
-		_TimerMove++;
-		if (_TimerMove >= _TIMER_WALK) {
-			// 移動完了
-			_GridX = _NextX;
-			_GridY = _NextY;
-      // ターン終了
-      _Change(eState.TurnEnd);
-			_AnimState = eAnimState.Standby;
-      MessageWindowManager.AddMessage("x = " + _GridX + ", y = " + _GridY + "に移動");
 		}
 	}
 

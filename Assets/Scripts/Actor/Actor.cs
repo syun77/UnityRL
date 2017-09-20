@@ -9,7 +9,7 @@ public class Actor : MonoBehaviour {
 
   // ------------------------------------------
   // ■定数
-  protected int _TIMER_WALK = 10; // 移動速度
+  protected int _TIMER_MOVE = 10; // 移動速度
 
   /// <summary>
   /// 状態
@@ -109,6 +109,16 @@ public class Actor : MonoBehaviour {
   }
 
   /// <summary>
+  /// 指定座標に存在するかどうか
+  /// </summary>
+  /// <returns><c>true</c>, if grid was existsed, <c>false</c> otherwise.</returns>
+  /// <param name="xgrid">Xgrid.</param>
+  /// <param name="ygrid">Ygrid.</param>
+  public bool ExistsGrid(int xgrid, int ygrid) {
+    return (_GridX == xgrid && _GridY == ygrid);
+  }
+
+  /// <summary>
   /// 更新
   /// </summary>
   virtual public void Proc() {
@@ -201,7 +211,7 @@ public class Actor : MonoBehaviour {
     // 座標の更新
     if (_State == eState.MoveExec) {
       // 補間あり
-      float Ratio = 1.0f *  _TimerMove / _TIMER_WALK;
+      float Ratio = 1.0f *  _TimerMove / _TIMER_MOVE;
       _UpdatePosition (Ratio);
     } else {
       _UpdatePosition(0);
@@ -210,6 +220,20 @@ public class Actor : MonoBehaviour {
     // アニメーションの更新
     _AnimTimer += Time.deltaTime;
     _UpdateAnimation();
+  }
+  /// <summary>
+  /// 更新・移動
+  /// </summary>
+  protected bool _ProcMove() {
+    _TimerMove++;
+    if (_TimerMove >= _TIMER_MOVE) {
+      // 移動完了
+      _GridX = _NextX;
+      _GridY = _NextY;
+      return true;
+    }
+
+    return false;
   }
 
   /// <summary>

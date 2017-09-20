@@ -25,6 +25,17 @@ public class EnemyManager : MonoBehaviour {
   }
 
   /// <summary>
+  /// 全ての敵を移動させる
+  /// </summary>
+  public static void MoveAll() {
+    ForEachExists (((Enemy e) => {
+      if (e.State == Actor.eState.MoveBegin) {
+        e.BeginMove ();
+      }
+    }));
+  }
+
+  /// <summary>
   /// 全て更新する
   /// </summary>
   public static void ProcAll() {

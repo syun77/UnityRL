@@ -11,5 +11,5 @@ public class Global {
     get { return _level; }
   }
 
-  static int _level = 2;
+  static int _level = 3;
 }
