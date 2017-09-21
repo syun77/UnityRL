@@ -135,6 +135,9 @@ public class Actor : MonoBehaviour {
   public bool ExistsGrid(int xgrid, int ygrid) {
     return (_GridX == xgrid && _GridY == ygrid);
   }
+	public bool ExistsNext(int xgrid, int ygrid) {
+		return (_NextX == xgrid && _NextY == ygrid);
+	}
 
   /// <summary>
   /// 更新

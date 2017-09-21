@@ -18,7 +18,7 @@ public class Enemy : Actor {
     var dir = _aiMoveDir ();
     p = DirUtil.Add (p, dir);
 
-    if (target.ExistsGrid (p.x, p.y)) {
+		if (target.ExistsNext(p.x, p.y)) {
       // 移動先にプレイヤーがいるときは攻撃する
       //_Change(eState.ActBegin);
 			_Change(eState.TurnEnd); // TODO: ひとまずターン終了
