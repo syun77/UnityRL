@@ -10,7 +10,7 @@ public class FieldManager : MonoBehaviour {
   /// <summary>
   /// タイル情報
   /// </summary>
-  enum eTile {
+  public enum eTile {
     Player = 1, // プレイヤー
     Stair,      // 階段
     Wall,       // 壁

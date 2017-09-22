@@ -76,6 +76,12 @@ public class Actor : MonoBehaviour {
   // 移動先の座標
   [SerializeField]
   protected int _NextX, _NextY;
+	public int NextX {
+		get { return _NextX; }
+	}
+	public int NextY {
+		get { return _NextY; }
+	}
 
   // アニメーションタイマー
   protected float _AnimTimer = 0;

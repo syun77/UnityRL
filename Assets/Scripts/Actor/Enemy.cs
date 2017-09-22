@@ -63,11 +63,28 @@ public class Enemy : Actor {
   eDir _aiMoveDir() {
     var dir = eDir.None;
 
+		dir = _AiMoveDirAStar ();
     // 頭の悪い方法で移動する
-    dir = _AiMoveDirStupid ();
+    //dir = _AiMoveDirStupid ();
 
     return dir;
   }
+
+	/// <summary>
+	/// A Star による経路探索
+	/// </summary>
+	/// <returns>The move dir A star.</returns>
+	eDir _AiMoveDirAStar() {
+		var target = Player.GetInstance ();
+		var astar = new AStar ();
+		var ret = astar.Calculate (FieldManager.Layer, _GridX, _GridY, target.NextX, target.NextY);
+		if (ret == false) {
+			// 移動しない
+			return eDir.None;
+		}
+
+		return astar.GetNextDir ();
+	}
 
   /// <summary>
   /// 頭の悪い方法で移動する

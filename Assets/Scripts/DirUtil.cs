@@ -39,6 +39,23 @@ public class DirUtil {
 		return v;
 	}
 
+	public static eDir ToDir(Point2D p) {
+		if (p.x < 0 && p.y == 0) {
+			return eDir.Left;
+		}
+		if (p.x == 0 && p.y < 0) {
+			return eDir.Up;
+		}
+		if (p.x > 0 && p.y == 0) {
+			return eDir.Right;
+		}
+		if (p.x == 0 && p.y > 0) {
+			return eDir.Down;
+		}
+
+		return eDir.None;
+	}
+
 	public static Point2D ToVecWorld(eDir Dir) {
 		var v = new Point2D(0, 0);
 		switch (Dir) {
