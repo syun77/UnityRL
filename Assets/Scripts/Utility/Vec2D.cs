@@ -11,7 +11,7 @@ public struct Vec2D {
   public int Y {
     get { return (int)y; }
   }
-  public Vec2D(float px, float py) {
+  public Vec2D(float px = 0, float py = 0) {
     x = px;
     y = py;
   }

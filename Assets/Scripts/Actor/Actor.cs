@@ -89,6 +89,9 @@ public class Actor : MonoBehaviour {
   // 移動タイマー
   protected int _TimerMove = 0;
 
+	// 描画オフセット
+	protected Vec2D _OffsetPosition = new Vec2D();
+
   // ------------------------------------------
   // ■ public関数
 
@@ -99,6 +102,7 @@ public class Actor : MonoBehaviour {
   public void Create(int id, eDir dir) {
     _ID = id;
     _Dir = dir;
+		_OffsetPosition.Set (0, 0);
   }
 
 	/// <summary>
@@ -280,6 +284,10 @@ public class Actor : MonoBehaviour {
     }
     p.x = px;
     p.y = py;
+
+		// オフセット座標を足し込む
+		p.x += _OffsetPosition.x;
+		p.y += _OffsetPosition.y;
 
     // 移動量反映
     transform.position = p;
