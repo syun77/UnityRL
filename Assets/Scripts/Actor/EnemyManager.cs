@@ -16,6 +16,7 @@ public class EnemyManager : MonoBehaviour {
   /// ForEach関数に渡す関数の型
   /// </summary>
   public delegate void FuncT(Enemy e);
+	public delegate bool FuncCheckT (Enemy e);
 
   public static EnemyManager instance = null;
 
@@ -46,7 +47,7 @@ public class EnemyManager : MonoBehaviour {
   /// 全て消す
   /// </summary>
   public static void KillAll() {
-    ForEachExists ((Enemy e) => e.enabled = false);
+		ForEachExists ((Enemy e) => e.Kill());
   }
 
   /// <summary>
@@ -58,6 +59,29 @@ public class EnemyManager : MonoBehaviour {
     return cnt;
   }
 
+	/// <summary>
+	/// 指定座標に敵が存在するかどうか
+	/// </summary>
+	/// <returns><c>true</c>, if to grip position was existsed, <c>false</c> otherwise.</returns>
+	/// <param name="x">The x coordinate.</param>
+	/// <param name="y">The y coordinate.</param>
+	public static bool ExistsToGridPosition(int x, int y) {
+		return ForEachExistsCheck (((Enemy e) => {
+			if(e.ExistsGrid(x, y)) {
+				return true;
+			}
+			return false;
+		}));
+	}
+	public static bool ExistsToGridNextPosition(int x, int y) {
+		return ForEachExistsCheck (((Enemy e) => {
+			if(e.ExistsNext(x, y)) {
+				return true;
+			}
+			return false;
+		}));
+	}
+
   public static void ForEachExists(FuncT func) {
     foreach (var e in instance._pool) {
       if (e.enabled) {
@@ -65,6 +89,17 @@ public class EnemyManager : MonoBehaviour {
       }
     }
   }
+	public static bool ForEachExistsCheck(FuncCheckT func) {
+		foreach (var e in instance._pool) {
+			if (e.enabled) {
+				if (func (e)) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
 
   public static Enemy Add(int id, int xgrid, int ygrid) {
     foreach(var e in instance._pool) {

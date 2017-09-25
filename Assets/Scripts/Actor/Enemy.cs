@@ -25,6 +25,12 @@ public class Enemy : Actor {
       return;
     }
 
+		if (EnemyManager.ExistsToGridNextPosition (p.x, p.y)) {
+			// 指定座標に敵がいる
+			_Change(eState.TurnEnd); // ターン終了
+			return;
+		}
+
     if (FieldManager.IsMovabledTile (p.x, p.y)) {
       // 移動可能
       _NextX = p.x;
