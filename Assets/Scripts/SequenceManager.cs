@@ -44,12 +44,19 @@ public class SequenceManager : MonoBehaviour {
     Debug.Log (_StatePrev);
   }
 
+	static public void Reset() {
+		var obj = GameObject.Find ("SequenceManager");
+		var mgr = obj.GetComponent<SequenceManager> ();
+		mgr._State = eState.KeyInput;
+		mgr._StatePrev = eState.KeyInput;
+	}
+
 	// Use this for initialization
 	void Start () {
     _player = _player.GetComponent<Player> ();
     Enemy.target = _player;
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
     var cnt = 0; // 無限ループ防止

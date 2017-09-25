@@ -39,13 +39,23 @@ public class FieldManager : MonoBehaviour {
     get { return _Layer; }
   }
 
+	/// <summary>
+	/// マップデータ読み込み
+	/// </summary>
+	static public void Load() {
+		var obj = GameObject.Find ("FieldManager");
+		var mgr = obj.GetComponent<FieldManager> ();
+		mgr._LoadMap();
+		mgr._CreateObjects ();
+	}
+
   /// <summary>
   /// 背景の描画
   /// </summary>
   static public void RenderBack() {
     var obj = GameObject.Find ("FieldManager");
-    var msg = obj.GetComponent<FieldManager> ();
-    msg._RenderBack ();
+    var mgr = obj.GetComponent<FieldManager> ();
+    mgr._RenderBack ();
   }
 
   /// <summary>
