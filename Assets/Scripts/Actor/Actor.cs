@@ -8,6 +8,9 @@ using UnityEngine;
 public class Actor : MonoBehaviour {
 
   // ------------------------------------------
+	protected delegate void FuncT();
+
+  // ------------------------------------------
   // ■定数
   protected int _TIMER_MOVE = 10; // 移動速度
 
@@ -266,6 +269,33 @@ public class Actor : MonoBehaviour {
 
     return false;
   }
+
+	/// <summary>
+	/// 攻撃アニメーション
+	/// </summary>
+	protected IEnumerator _Attack(Actor target, FuncT cbFunc) {
+		float size = Field.ToWorldDX (1);
+		int dx = target.GridX - GridX;
+		int dy = -(target.GridY - GridY); // 上下逆
+		const int SPEED = 4;
+		const float WAIT = 1.0f / 200;
+		for (int i = 0; i < SPEED; i++) {
+			float d = size * i / SPEED;
+			_OffsetPosition.x = dx * d;
+			_OffsetPosition.y = dy * d;
+			yield return new WaitForSeconds(WAIT);
+		}
+		for (int i = 0; i < SPEED; i++) {
+			float d = size * (SPEED - i) / SPEED;
+			_OffsetPosition.x = dx * d;
+			_OffsetPosition.y = dy * d;
+			yield return new WaitForSeconds(WAIT);
+		}
+
+		_OffsetPosition.Set (0, 0);
+
+		cbFunc ();
+	}
 
   /// <summary>
   /// 座標の更新

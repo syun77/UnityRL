@@ -8,9 +8,6 @@ using UnityEngine;
 public class Player : Actor {
 
   // ------------------------------------------
-	public delegate void FuncT();
-
-  // ------------------------------------------
   // ■static
   public static Player GetInstance() {
     var obj = GameObject.Find ("Player");
@@ -29,10 +26,10 @@ public class Player : Actor {
 		case eState.ActBegin:
 			// 攻撃開始
 			StartCoroutine(_Attack (_Target, () => {
-				_Target.Kill();
 				base.BeginAction ();
 
 				// TODO: ひとまず1ターンで倒したことにする
+				_Target.Kill();
 				_Change (eState.TurnEnd);
 			}));
 			break;
@@ -42,33 +39,6 @@ public class Player : Actor {
 
   // =======================================================
   // ■ここから private 関数
-
-	/// <summary>
-	/// 攻撃アニメーション
-	/// </summary>
-	IEnumerator _Attack(Actor target, FuncT cbFunc) {
-		float size = Field.ToWorldDX (1);
-		int dx = target.GridX - GridX;
-		int dy = -(target.GridY - GridY); // 上下逆
-		const int SPEED = 4;
-		const float WAIT = 1.0f / 200;
-		for (int i = 0; i < SPEED; i++) {
-			float d = size * i / SPEED;
-			_OffsetPosition.x = dx * d;
-			_OffsetPosition.y = dy * d;
-			yield return new WaitForSeconds(WAIT);
-		}
-		for (int i = 0; i < SPEED; i++) {
-			float d = size * (SPEED - i) / SPEED;
-			_OffsetPosition.x = dx * d;
-			_OffsetPosition.y = dy * d;
-			yield return new WaitForSeconds(WAIT);
-		}
-
-		_OffsetPosition.Set (0, 0);
-
-		cbFunc ();
-	}
 
   /// <summary>
   /// 開始

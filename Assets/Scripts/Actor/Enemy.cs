@@ -10,6 +10,13 @@ public class Enemy : Actor {
 
   public static Player target = null;
 
+  // ------------------------------------------
+  // ■メンバ変数
+	Player _Target = null;
+
+  // ------------------------------------------
+  // ■ public関数
+
   /// <summary>
   /// 移動要求をする
   /// </summary>
@@ -18,10 +25,12 @@ public class Enemy : Actor {
     var dir = _aiMoveDir ();
     p = DirUtil.Add (p, dir);
 
+		_Target = null;
 		if (target.ExistsNext(p.x, p.y)) {
       // 移動先にプレイヤーがいるときは攻撃する
-      //_Change(eState.ActBegin);
-			_Change(eState.TurnEnd); // TODO: ひとまずターン終了
+			_Dir = dir;
+			_Target = target;
+      _Change(eState.ActBegin);
       return;
     }
 
@@ -40,8 +49,23 @@ public class Enemy : Actor {
       // 移動できないのでターン終了
       _Change (eState.TurnEnd);
     }
-
   }
+
+	/// <summary>
+	/// 行動開始
+	/// </summary>
+	override public void BeginAction() {
+		switch (State) {
+		case eState.ActBegin:
+			// 攻撃開始
+			StartCoroutine (_Attack (_Target, () => {
+				base.BeginAction ();
+				// TODO: ダメージ処理は未実装
+				_Change (eState.TurnEnd);
+			}));
+			break;
+		}
+	}
 
   /// <summary>
   /// 開始
