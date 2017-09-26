@@ -162,9 +162,8 @@ public class SequenceManager : MonoBehaviour {
       _Change (eState.EnemyAct);
       break;
 
-    case eState.EnemyAct:
-      // TODO: 敵の行動終了
-      _Change (eState.EnemyActEnd);
+		case eState.EnemyAct:
+			_ProcEnemyAct ();
       break;
 
     case eState.EnemyActEnd:
@@ -179,6 +178,61 @@ public class SequenceManager : MonoBehaviour {
 
     return ret;
   }
+
+	/// <summary>
+	/// 更新・敵の行動
+	/// </summary>
+	void _ProcEnemyAct() {
+		var isNext       = true;  // 次に進むかどうか
+		var isActRemain  = false; // 行動していない敵がいる
+		var isMoveRemain = false; // 移動していない敵がいる
+
+		// 敵のアクションチェック
+		EnemyManager.ForEachExists((Enemy e) => {
+			switch(e.State) {
+			case Actor.eState.ActExec:
+				isNext = false; // アクション実行中
+				break;
+
+			case Actor.eState.MoveExec:
+				isNext = false; // 移動中
+				break;
+
+			case Actor.eState.ActBegin:
+				isActRemain = true; // アクション実行待ち
+				break;
+
+			case Actor.eState.MoveBegin:
+				isMoveRemain = true; // 移動待ち
+				break;
+
+			case Actor.eState.TurnEnd:
+				// ターン終了
+				break;
+
+			default:
+				// 通常ここにはこない
+				Debug.LogErrorFormat("Error: Invalid action = {0}", e.State);
+				break;
+			}
+		});
+
+		if(isNext) {
+			// 敵が行動完了した
+			if(isActRemain) {
+				// 次の敵を動かす
+				_Change(eState.EnemyActBegin);
+			}
+			else if(isMoveRemain) {
+				// 移動待ちの敵を動かす
+				EnemyManager.MoveAll();
+			}
+			else {
+				// 敵の行動終了
+				_Change(eState.EnemyActEnd);
+			}
+		}
+	}
 
   /// <summary>
   /// 更新・ターン終了

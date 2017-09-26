@@ -58,8 +58,8 @@ public class Enemy : Actor {
 		switch (State) {
 		case eState.ActBegin:
 			// 攻撃開始
+			base.BeginAction ();
 			StartCoroutine (_Attack (_Target, () => {
-				base.BeginAction ();
 				// TODO: ダメージ処理は未実装
 				_Change (eState.TurnEnd);
 			}));

@@ -25,9 +25,8 @@ public class Player : Actor {
 		switch (State) {
 		case eState.ActBegin:
 			// 攻撃開始
+			base.BeginAction ();
 			StartCoroutine(_Attack (_Target, () => {
-				base.BeginAction ();
-
 				// TODO: ひとまず1ターンで倒したことにする
 				_Target.Kill();
 				_Change (eState.TurnEnd);
