@@ -17,6 +17,12 @@ public class Enemy : Actor {
   // ------------------------------------------
   // ■ public関数
 
+	override public void Vanish() {
+		var x = transform.position.x;
+		var y = transform.position.y;
+		ParticleManager.AddBall(x, y);
+	}
+
   /// <summary>
   /// 移動要求をする
   /// </summary>

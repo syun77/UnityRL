@@ -126,6 +126,9 @@ public class Actor : MonoBehaviour {
 		renderer.enabled = false;
 	}
 
+	virtual public void Vanish() {
+	}
+
   /// <summary>
   /// 指定座標にワープする
   /// </summary>

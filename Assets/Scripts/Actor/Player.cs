@@ -28,7 +28,7 @@ public class Player : Actor {
 			base.BeginAction ();
 			StartCoroutine(_Attack (_Target, () => {
 				// TODO: ひとまず1ターンで倒したことにする
-				_Target.Kill();
+				_Target.Vanish();
 				_Change (eState.TurnEnd);
 			}));
 			break;
