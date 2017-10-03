@@ -25,7 +25,10 @@ public class ParticleManager : MonoBehaviour {
 	void _AddBall(float x, float y) {
 		Vector3 v = new Vector3 (x, y, 0);
 		Quaternion q = new Quaternion ();
-		GameObject.Instantiate (ball, v, q);
+		var b = GameObject.Instantiate (ball, v, q) as ParticleBall;
+		var render = b.GetComponent<SpriteRenderer> ();
+		var color = new Color32 (0xFF, 0, 0, 0xFF);
+		render.color = color;
 	}
 
 	// Use this for initialization

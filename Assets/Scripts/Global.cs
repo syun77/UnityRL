@@ -11,5 +11,10 @@ public class Global {
     get { return _level; }
   }
 
+	static public int hp {
+		get { return _hp; }
+	}
+
   static int _level = 3;
+	static int _hp = 10;
 }
