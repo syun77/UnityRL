@@ -8,6 +8,16 @@ using UnityEngine;
 public class Player : Actor {
 
   // ------------------------------------------
+	// ■定数
+	/// <summary>
+	/// 踏んでいるチップ
+	/// </summary>
+	public enum eStompChip {
+		None,  // 何もなし
+		Stair, // 階段
+	}
+
+  // ------------------------------------------
   // ■static
   public static Player GetInstance() {
     var obj = GameObject.Find ("Player");
@@ -17,6 +27,10 @@ public class Player : Actor {
   // ------------------------------------------
   // ■メンバ変数
 	Enemy _Target = null;
+	eStompChip _stompChip = eStompChip.None;
+	public eStompChip StompChip {
+		get { return _stompChip; }
+	}
 
   // ------------------------------------------
   // ■ public関数
@@ -33,7 +47,19 @@ public class Player : Actor {
 			}));
 			break;
 		}
+	}
 
+	override public void TurnEnd() {
+		// 踏んでいるチップをリセットする
+		ResetStompChip ();
+		base.TurnEnd ();
+	}
+
+	/// <summary>
+	/// 踏んでいるチップをリセットする
+	/// </summary>
+	public void ResetStompChip() {
+		_stompChip = eStompChip.None;
 	}
 
   // =======================================================
@@ -64,9 +90,12 @@ public class Player : Actor {
 			// 移動
       if (_ProcMove ()) {
         // 移動完了
+				// 足下のチップを更新
+				_SetStompChip();
         _Change(eState.TurnEnd);
       }
 			break;
+
 		}
 	}
 
@@ -122,6 +151,21 @@ public class Player : Actor {
       _TimerMove = 0;
       _Change(eState.MoveBegin);
     }
+	}
+
+	/// <summary>
+	/// 踏んでいるチップを反映させる
+	/// </summary>
+	void _SetStompChip() {
+		switch (FieldManager.GetTile (GridX, GridY)) {
+		case FieldManager.eTile.Stair:
+			// 階段がある
+			_stompChip = eStompChip.Stair;
+			break;
+		default:
+			_stompChip = eStompChip.None;
+			break;
+		}
 	}
 
   /// <summary>

@@ -104,6 +104,16 @@ public class FieldManager : MonoBehaviour {
     _Texture.Apply ();
   }
 
+	/// <summary>
+	/// タイル情報を取得する
+	/// </summary>
+	/// <returns>The tile.</returns>
+	/// <param name="i">The index.</param>
+	/// <param name="j">J.</param>
+	static public eTile GetTile(int i, int j) {
+		return (eTile)_Layer.Get (i, j);
+	}
+
   /// <summary>
   /// 移動可能な座標かどうか
   /// </summary>

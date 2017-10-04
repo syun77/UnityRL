@@ -113,13 +113,8 @@ public class SequenceManager : MonoBehaviour {
       break;
 
     case eState.PlayerActEnd:
-      if (false) {
-        // 階段を踏んでいたら次の階へ進む
-        _Change (eState.NextFloorWait);
-      } else {
-        // 敵のAI開始
-        _Change(eState.EnemyRequestAI);
-      }
+      // 敵のAI開始
+      _Change(eState.EnemyRequestAI);
       break;
 
     case eState.EnemyRequestAI: // 敵のAI
@@ -167,11 +162,26 @@ public class SequenceManager : MonoBehaviour {
       break;
 
     case eState.EnemyActEnd:
+      // ターン終了
       _Change (eState.TurnEnd);
       break;
 
+		case eState.NextFloorWait:
+			// 次のレベルに進む
+			Global.NextLevel ();
+			// レベルリスタート
+			SequenceManager.Reset();
+			EnemyManager.KillAll();
+			FieldManager.Load();
+			break;
+
     case eState.TurnEnd: // ターン終了
+			Player.eStompChip Chip = _player.StompChip;
       _ProcTurnEnd ();
+			if (Chip == Player.eStompChip.Stair) {
+        // 階段を踏んでいたら次の階へ進む
+        _Change (eState.NextFloorWait);
+      }
       ret = true;
       break;
     }

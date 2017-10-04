@@ -21,6 +21,9 @@ public class Enemy : Actor {
 		var x = transform.position.x;
 		var y = transform.position.y;
 		ParticleManager.AddBall(x, y);
+
+		// TODO: 一撃で倒せることにする
+		Kill ();
 	}
 
   /// <summary>

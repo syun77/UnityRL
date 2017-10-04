@@ -17,4 +17,12 @@ public class Global {
 
   static int _level = 3;
 	static int _hp = 10;
+
+	/// <summary>
+	/// 次のレベルに進む
+	/// </summary>
+	public static void NextLevel() {
+		// TODO:
+		_level++;
+	}
 }

@@ -204,7 +204,7 @@ public class Actor : MonoBehaviour {
   /// <summary>
   /// ターン終了
   /// </summary>
-  public void TurnEnd() {
+  virtual public void TurnEnd() {
     _Change (eState.KeyInput);
   }
 
