@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 /// 2次元レイヤー
 public class Array2D {
@@ -19,6 +20,7 @@ public class Array2D {
 
   /// ForEach関数に渡す関数の型
   public delegate void FuncT(int i, int j, int val);
+	public delegate void FuncIdxT (int idx, int val);
 
 	/// 作成
 	public void Create(int width, int height) {
@@ -39,6 +41,14 @@ public class Array2D {
 	/// 座標をインデックスに変換する
 	public int ToIdx(int x, int y) {
 		return x + (y * Width);
+	}
+
+	/// インデックス値をX座標に変換する
+	public int IdxToX(int idx) {
+		return idx % Width;
+	}
+	public int IdxToY(int idx) {
+		return idx / Width;
 	}
 
 	/// 領域外かどうかチェックする
@@ -74,6 +84,15 @@ public class Array2D {
 		_values[y * Width + x] = v;
 	}
 
+	public void SetFromIdx(int idx, int v) {
+		if (idx < 0 || Width * Height <= idx) {
+			// 領域外を指定した
+			return;
+		}
+
+		_values[idx] = v;
+	}
+
   /// 全要素を走査し、その座標の値を関数に渡す
   public void ForEach(FuncT func) {
     for(var j = 0; j < Height; j++) {
@@ -83,6 +102,12 @@ public class Array2D {
       }
     }
   }
+	public void ForEachIndex(FuncIdxT func) {
+		for(var i = 0; i < Width*Height; i++) {
+			int val = _values [i];
+			func (i, val);
+		}
+	}
 
   /// 指定の値が存在する座標を返す
   /// 見つからなかった場合は(-1, -1)を返す
@@ -98,6 +123,36 @@ public class Array2D {
     // 見つからなかった
     return new Vec2D(-1, -1);
   }
+
+	/// 指定の値が存在する座標をランダムで探す
+	public Point2D SearchRandom(int val) {
+		var list = new List<int> ();
+		ForEachIndex((int idx, int v) => {
+			if(v == val) {
+				list.Add(idx);
+			}
+		});
+
+		int rnd = Random.Range (0, list.Count);
+		int idx2 = list[rnd];
+		return new Point2D(IdxToX(idx2), IdxToY(idx2));
+	}
+
+	/// 指定の値ですべてを埋める
+	public void Fill(int val) {
+		ForEachIndex ((int idx, int v) => {
+			SetFromIdx(idx, val);
+		});
+	}
+	/// srcの値に一致するものをdstで埋める
+	public void FillSearchVal(int src, int dst) {
+		ForEachIndex((int idx, int v) => {
+			if(v == src) {
+				// 一致した
+				SetFromIdx(idx, dst);
+			}
+		});
+	}
 
   /// CSV文字列に変換する
   public string ToCsv() {

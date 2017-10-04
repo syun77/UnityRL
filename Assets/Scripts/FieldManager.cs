@@ -11,6 +11,8 @@ public class FieldManager : MonoBehaviour {
   /// タイル情報
   /// </summary>
   public enum eTile {
+		None = 0,   // 何もなし
+
     Player = 1, // プレイヤー
     Stair,      // 階段
     Wall,       // 壁
@@ -157,9 +159,22 @@ public class FieldManager : MonoBehaviour {
     _TileWidth  = tmx.TileWidth;
     _TileHeight = tmx.TileHeight;
 
+		// 階段の抽選
+		_LotteryStair();
+
     // 背景描画
     _RenderBack ();
   }
+
+	/// <summary>
+	/// 階段の抽選
+	/// </summary>
+	void _LotteryStair() {
+		var stair = (int)eTile.Stair;
+		Point2D p = Layer.SearchRandom(stair);
+		Layer.FillSearchVal(stair, (int)eTile.Floor);
+		Layer.Set(p.x, p.y, stair);
+	}
 
   /// <summary>
   /// 背景描画
@@ -199,6 +214,9 @@ public class FieldManager : MonoBehaviour {
     var width = _Layer.Width;
     _Layer.ForEach ((int i, int j, int v) => {
       switch((eTile)v) {
+			case eTile.Stair: // 階段
+				RenderTile(i, j, v);
+				break;
       case eTile.Wall: // 壁
         RenderTile(i, j, v);
         break;
