@@ -49,12 +49,18 @@ public class SequenceManager : MonoBehaviour {
 		var mgr = obj.GetComponent<SequenceManager> ();
 		mgr._State = eState.KeyInput;
 		mgr._StatePrev = eState.KeyInput;
+
+		// フェード開始
+		FadePanel.Begin (FadePanel.eType.Black, FadePanel.eMode.FadeIn);
 	}
 
 	// Use this for initialization
 	void Start () {
     _player = _player.GetComponent<Player> ();
     Enemy.target = _player;
+
+		// フェード開始
+		FadePanel.Begin (FadePanel.eType.Black, FadePanel.eMode.FadeIn);
 	}
 
 	// Update is called once per frame
@@ -167,21 +173,27 @@ public class SequenceManager : MonoBehaviour {
       break;
 
 		case eState.NextFloorWait:
-			// 次のレベルに進む
-			Global.NextLevel ();
-			// レベルリスタート
-			SequenceManager.Reset();
-			EnemyManager.KillAll();
-			FieldManager.Load();
+			if (FadePanel.IsEnd ()) {
+				// 次のレベルに進む
+				Global.NextLevel ();
+				// レベルリスタート
+				SequenceManager.Reset();
+				EnemyManager.KillAll();
+				FieldManager.Load();
+			}
 			break;
 
     case eState.TurnEnd: // ターン終了
 			Player.eStompChip Chip = _player.StompChip;
-      _ProcTurnEnd ();
 			if (Chip == Player.eStompChip.Stair) {
         // 階段を踏んでいたら次の階へ進む
+				FadePanel.Begin(FadePanel.eType.Black, FadePanel.eMode.FadeOut);
+				// 踏んでいるチップを初期化
+				_player.ResetStompChip ();
         _Change (eState.NextFloorWait);
+				break;
       }
+      _ProcTurnEnd ();
       ret = true;
       break;
     }
