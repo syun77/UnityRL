@@ -1,18 +1,25 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Particle/ParticleBall.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/SequenceManager.cs">
     <Files>
-      <File FileName="Assets/Scripts/Actor/Player.cs" Line="31" Column="18" />
-      <File FileName="Assets/Scripts/Actor/Actor.cs" Line="130" Column="2" />
-      <File FileName="Assets/Scripts/Particle/ParticleBall.cs" Line="27" Column="14" />
-      <File FileName="Assets/Scripts/Particle/ParticleManager.cs" Line="28" Column="36" />
-      <File FileName="Assets/Scripts/Actor/Enemy.cs" Line="23" Column="22" NotebookId="1" />
-      <File FileName="Assets/Scripts/SequenceManager.cs" Line="180" Column="1" NotebookId="1" />
+      <File FileName="Assets/Scripts/Actor/Player.cs" Line="54" Column="1" />
+      <File FileName="Assets/Scripts/Actor/Actor.cs" Line="207" Column="10" />
+      <File FileName="Assets/Scripts/SequenceManager.cs" Line="166" Column="5" />
+      <File FileName="Assets/Scripts/Global.cs" Line="25" Column="10" />
+      <File FileName="Assets/Scripts/Actor/Enemy.cs" Line="25" Column="22" NotebookId="1" />
+      <File FileName="Assets/Scripts/Field.cs" Line="1" Column="1" NotebookId="1" />
+      <File FileName="Assets/Scripts/FieldManager.cs" Line="114" Column="16" NotebookId="1" />
+      <File FileName="Assets/Scripts/Utility/Array2D.cs" Line="128" Column="2" NotebookId="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="/Users/syun/Desktop/UnityRL/Assets/Scripts/Actor/Actor.cs" line="191" column="1" />
+      <Breakpoint file="/Users/syun/Desktop/UnityRL/Assets/Scripts/SequenceManager.cs" line="171" column="1" />
+      <Breakpoint file="/Users/syun/Desktop/UnityRL/Assets/Scripts/Actor/Player.cs" line="54" column="1" />
+      <Breakpoint file="/Users/syun/Desktop/UnityRL/Assets/Scripts/Actor/Player.cs" line="94" column="1" />
+      <Breakpoint file="/Users/syun/Desktop/UnityRL/Assets/Scripts/Actor/Player.cs" line="160" column="1" />
+      <Breakpoint file="/Users/syun/Desktop/UnityRL/Assets/Scripts/SequenceManager.cs" line="111" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
